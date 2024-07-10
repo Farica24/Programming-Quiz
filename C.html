@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Quiz</title>
+    <link rel="stylesheet" href="C.css">
+    <script>
+        const questions = [
+            {
+                question: "What is the output of the following code: printf(\"%d\", (5+3) * 2);",
+                options: ["10", "16", "20", "18"],
+                answer: 1
+            },
+            {
+                question: "Which of the following is a valid C variable name?",
+                options: ["int", "float", "char", "variable1"],
+                answer: 3
+            },
+            {
+                question: "Which operator is used to add two numbers in C?",
+                options: ["-", "*", "+", "/"],
+                answer: 2
+            },
+            {
+                question: "What is the size of an int in C?",
+                options: ["2 bytes", "4 bytes", "1 byte", "8 bytes"],
+                answer: 1
+            },
+            {
+                question: "Which of the following is a logical operator in C?",
+                options: ["&", "|", "&&", "%"],
+                answer: 2
+            },
+            {
+                question: "Which function is used to find the length of a string in C?",
+                options: ["strlength()", "strlen()", "strsize()", "stringlength()"],
+                answer: 1
+            },
+            {
+                question: "What is the output of 7 % 3 in C?",
+                options: ["1", "2", "0", "3"],
+                answer: 0
+            },
+            {
+                question: "Which of the following is used to comment a single line in C?",
+                options: ["//", "/*", "*/", "#"],
+                answer: 0
+            },
+            {
+                question: "Which of the following data types is not supported in C?",
+                options: ["int", "float", "boolean", "double"],
+                answer: 2
+            },
+            {
+                question: "Which keyword is used to return a value from a function in C?",
+                options: ["get", "return", "retrieve", "yield"],
+                answer: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById('question');
+            const optionsElement = document.getElementById('options');
+
+            questionElement.textContent = questions[currentQuestionIndex].question;
+            optionsElement.innerHTML = '';
+
+            questions[currentQuestionIndex].options.forEach((option, index) => {
+                const label = document.createElement('label');
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'option';
+                input.value = index;
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(option));
+                optionsElement.appendChild(label);
+            });
+        }
+
+        function showNextQuestion() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (selectedOption && selectedOption.value == questions[currentQuestionIndex].answer) {
+                score++;
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function showResults() {
+            const quizContainer = document.querySelector('.quiz-container');
+            let resultHTML = `<h2>Your score is ${score} out of ${questions.length}</h2>`;
+            resultHTML += '<div class="solution-bank"><h3>Solution Bank</h3><ol>';
+
+            questions.forEach((q, index) => {
+                resultHTML += `<li>${q.question}<br>Correct Answer: ${q.options[q.answer]}</li>`;
+            });
+
+            resultHTML += '</ol></div>';
+            quizContainer.innerHTML = resultHTML;
+        }
+
+        window.onload = loadQuestion;
+    </script>
+</head>
+<body>
+    <header>
+        <h1>C Quiz</h1>
+    </header>
+    <div class="quiz-container">
+        <h2 id="question">Question</h2>
+        <div id="options" class="options"></div>
+        <div class="buttons">
+            <button onclick="showPreviousQuestion()">Previous</button>
+            <button onclick="showNextQuestion()">Next</button>
+        </div>
+    </div>
+</body>
+</html>
